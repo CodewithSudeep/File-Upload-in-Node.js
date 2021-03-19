@@ -89,7 +89,26 @@ module.exports = UploadRouter;
 ```
 
 9. Run the server and test using PostmanAPI
-<img src="./uploads/test.png" alt="test image"/>
+   <img src="./uploads/test.png" alt="test image"/>
+
+## Solution regarding Security in File Upload
+
+**1. Mitigating FCA by whitelisting the file type. In this case only image formats are allowed or any specific file type can be chosen.**
+
+```
+var upload = multer({
+    storage: storage,
+    // @dev instead of OR operation in if conditionals,  we can use switch operation too.
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+});
+```
 
 <hr/>
 
